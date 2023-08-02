@@ -7,6 +7,7 @@ import MyOrders from "../MyOrders";
 import SignIn from "../SignIn";
 import NotFound from "../NotFound";
 import Navbar from "../../components/Navbar";
+import Layout from "../../components/Layout";
 
 import "./App.css";
 
@@ -45,9 +46,9 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<Navbar />
-			<main className="mt-20">
+			<Layout>
 				<AppRoutes />
-			</main>
+			</Layout>
 		</BrowserRouter>
 	);
 };
