@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+function Navbar() {
 	const activeStyle = "underline underline-offset-4";
 
 	return (
@@ -79,6 +79,6 @@ const Navbar = () => {
 			</ul>
 		</nav>
 	);
-};
+}
 
 export default Navbar;

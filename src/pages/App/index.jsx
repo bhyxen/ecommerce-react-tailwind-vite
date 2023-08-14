@@ -12,7 +12,7 @@ import Layout from "../../components/Layout";
 import "./App.css";
 
 const AppRoutes = () => {
-	let routes = useRoutes([
+	const routes = useRoutes([
 		{
 			path: "/",
 			element: <Home />
@@ -42,7 +42,7 @@ const AppRoutes = () => {
 	return routes;
 };
 
-const App = () => {
+function App() {
 	return (
 		<BrowserRouter>
 			<Navbar />
@@ -51,6 +51,6 @@ const App = () => {
 			</Layout>
 		</BrowserRouter>
 	);
-};
+}
 
 export default App;
