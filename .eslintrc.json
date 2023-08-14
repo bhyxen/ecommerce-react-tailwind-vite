@@ -1,0 +1,12 @@
+{
+	"env": { "browser": true, "es2024": true, "node": true },
+	"extends": ["airbnb", "airbnb/hooks", "prettier"],
+	"parserOptions": {
+		"sourceType": "module"
+	},
+	"rules": {
+		// Disabled this rule because in some React projects like Vite or Next.js,
+		// importing React explicity is NOT required
+		"react/react-in-jsx-scope": "off"
+	}
+}
