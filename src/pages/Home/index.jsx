@@ -1,3 +1,13 @@
+import Card from "../../components/Card/index";
+
 export default function Home() {
-	return <div className="bg-red-100">Home</div>;
+	return (
+		<div className="container flex flex-wrap">
+			<Card />
+			<Card />
+			<Card />
+			<Card />
+			<Card />
+		</div>
+	);
 }
