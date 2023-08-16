@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TagIcon } from "@heroicons/react/24/solid";
 import PropTypes from "prop-types";
 import Button from "../Button/index";
+import { StoreContext } from "../../context";
 
 function Card({ category, images, price, title }) {
+	const { setCartCount } = useContext(StoreContext);
+
+	const handleOnClick = () => {
+		setCartCount((prevState) => prevState + 1);
+	};
+
 	return (
 		<div className="p-5">
 			<figure className="flex flex-col h-full border-solid border border-black rounded-md relative hover:outline-8 outline-black outline-8 transition-transform box-border hover:shadow-2xl overflow-hidden">
@@ -31,6 +38,7 @@ function Card({ category, images, price, title }) {
 								text="+"
 								className="text-xl px-0 rounded-tl-2xl rounded-tr-none rounded-bl-none rounded-br-none border-b-0 border-r-0 max-h-10 w-2/6 h-full -mx-3"
 								title="Add to cart"
+								onClick={handleOnClick}
 							/>
 						</div>
 					</div>

@@ -8,6 +8,7 @@ import SignIn from "../SignIn";
 import NotFound from "../NotFound";
 import Navbar from "../../components/Navbar";
 import Layout from "../../components/Layout";
+import StoreContextProvider from "../../context";
 
 import "./App.css";
 
@@ -44,11 +45,13 @@ const AppRoutes = () => {
 
 export default function App() {
 	return (
-		<BrowserRouter>
-			<Navbar />
-			<Layout>
-				<AppRoutes />
-			</Layout>
-		</BrowserRouter>
+		<StoreContextProvider>
+			<BrowserRouter>
+				<Navbar />
+				<Layout>
+					<AppRoutes />
+				</Layout>
+			</BrowserRouter>
+		</StoreContextProvider>
 	);
 }
