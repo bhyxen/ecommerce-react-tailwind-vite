@@ -3,35 +3,49 @@ import { useEffect, useState } from "react";
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
 
-// This should be in an environment variable on a real world app
-const API_ENDPOINT =
-	"https://api.escuelajs.co/api/v1/products/?offset=0&limit=12";
+// This should be in an environment variable on a real world app if private
+const API_ENDPOINT = "https://api.escuelajs.co/api/v1/products/";
+const RESULTS_LIMIT = 12;
+const ERROR_MESSAGE =
+	"No products found or there has been an error, please again try later.";
+const LOADING_MESSAGE = "Loading products...";
 
 export default function Home() {
 	const [products, setProducts] = useState(null);
-	const [errorMessage, setErrorMessage] = useState("");
 	const [loading, setLoading] = useState(true);
+	const [productsOffset, setProductsOffset] = useState(0);
+	const [moreProductsAvailable, setMoreProductsAvailable] = useState(true);
 
-	useEffect(() => {
-		fetch(API_ENDPOINT)
+	const fetchData = () => {
+		fetch(`${API_ENDPOINT}?offset=${productsOffset}&limit=${RESULTS_LIMIT}`)
 			.then((res) => {
-				if (res.status === 404) {
-					setErrorMessage("No products found.");
-					throw new Error(errorMessage);
-				}
 				if (!res.ok) {
-					setErrorMessage("There has been an error, please again try later.");
-					throw new Error(errorMessage);
+					throw new Error(ERROR_MESSAGE);
 				}
 				return res.json();
 			})
-			.then((data) => setProducts(data))
+			.then((data) => {
+				setProducts((prevState) =>
+					// If offset !== 0 means that we are already paginating the results
+					productsOffset !== 0 ? [...prevState, ...data] : data,
+				);
+				if (data.length === 0) {
+					setMoreProductsAvailable(false);
+				}
+			})
 			// eslint-disable-next-line no-console
-			.catch((error) => console.log({ error }))
+			.catch((error) => console.error(error))
 			.finally(() => {
 				setLoading(false);
 			});
-	}, [errorMessage]);
+	};
+
+	const loadMoreItems = () => {
+		// By updating the state, we are triggering the useEffect callback
+		setProductsOffset((prevState) => prevState + 12);
+	};
+
+	useEffect(fetchData, [productsOffset]);
 
 	return (
 		<>
@@ -48,11 +62,18 @@ export default function Home() {
 					))
 				) : (
 					<p className="text-md font-light text-center col-span-full">
-						{loading ? "Loading..." : errorMessage}
+						{loading ? LOADING_MESSAGE : ERROR_MESSAGE}
 					</p>
 				)}
 			</div>
-			<Button text="Load More Items" type="button" className="my-5" />
+			{moreProductsAvailable && (
+				<Button
+					text="Load More Items"
+					type="button"
+					className="my-5"
+					onClick={loadMoreItems}
+				/>
+			)}
 		</>
 	);
 }
