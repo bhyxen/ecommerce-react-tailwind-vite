@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
@@ -40,10 +40,12 @@ export default function Home() {
 			});
 	};
 
-	const loadMoreItems = () => {
+	// Using useCallback() to always send the same function as callback to the Button component,
+	// in this way we prevent creating a new loadMoreItems() function on each render
+	const loadMoreItems = useCallback(() => {
 		// By updating the state, we are triggering the useEffect callback
-		setProductsOffset((prevState) => prevState + 12);
-	};
+		setProductsOffset((prevState) => prevState + RESULTS_LIMIT);
+	}, []);
 
 	useEffect(fetchData, [productsOffset]);
 

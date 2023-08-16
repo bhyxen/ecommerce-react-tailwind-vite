@@ -1,8 +1,9 @@
+import React from "react";
 import { TagIcon } from "@heroicons/react/24/solid";
 import PropTypes from "prop-types";
 import Button from "../Button/index";
 
-export default function Card({ category, images, price, title }) {
+function Card({ category, images, price, title }) {
 	return (
 		<div className="p-5">
 			<figure className="flex flex-col h-full border-solid border border-black rounded-md relative hover:outline-8 outline-black outline-8 transition-transform box-border hover:shadow-2xl overflow-hidden">
@@ -49,3 +50,5 @@ Card.propTypes = {
 	price: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
 };
+
+export default React.memo(Card);

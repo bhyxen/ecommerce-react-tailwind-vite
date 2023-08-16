@@ -1,6 +1,7 @@
+import React from "react";
 import PropTypes from "prop-types";
 
-export default function Button({ type, text, className, title, onClick }) {
+function Button({ type, text, className, title, onClick }) {
 	return (
 		<button
 			title={title}
@@ -27,3 +28,5 @@ Button.defaultProps = {
 	onClick: () => null,
 	title: "",
 };
+
+export default React.memo(Button);
