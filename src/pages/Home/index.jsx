@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
+import ProductDetail from "../../components/ProductDetails";
 
 // This should be in an environment variable on a real world app if private
 const API_ENDPOINT = "https://api.escuelajs.co/api/v1/products/";
@@ -53,15 +54,18 @@ export default function Home() {
 		<>
 			<div className="w-full max-w-screen-lg grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{products ? (
-					products.map(({ id, category, images, price, title }) => (
-						<Card
-							key={id}
-							images={images}
-							price={price}
-							category={category}
-							title={title}
-						/>
-					))
+					products.map(
+						({ id, category, images, price, title, description }) => (
+							<Card
+								key={id}
+								images={images}
+								price={price}
+								category={category}
+								title={title}
+								description={description}
+							/>
+						),
+					)
 				) : (
 					<p className="text-md font-light text-center col-span-full">
 						{loading ? LOADING_MESSAGE : ERROR_MESSAGE}
@@ -70,12 +74,13 @@ export default function Home() {
 			</div>
 			{moreProductsAvailable && (
 				<Button
-					text="Load More Items"
+					text="Load More Products"
 					type="button"
 					className="my-5"
 					onClick={loadMoreItems}
 				/>
 			)}
+			<ProductDetail />
 		</>
 	);
 }
