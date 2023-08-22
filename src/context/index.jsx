@@ -6,7 +6,10 @@ export const StoreContext = createContext();
 export default function StoreContextProvider({ children }) {
 	const [cartCount, setCartCount] = useState(0);
 	const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
-	const [productDetailsShown, setProductDetailsShown] = useState([]);
+	const [productDetailsShown, setProductDetailsShown] = useState({});
+	const [cartProducts, setCartProducts] = useState([]);
+	const [isCartMenuOpen, setIsCartMenuOpen] = useState(false);
+	const [cartTotal, setCartTotal] = useState(0);
 
 	// Here we are manually adding the overflow-* class to the body to prevent it from scrolling when using
 	// product details as a modal on smaller devices
@@ -23,6 +26,107 @@ export default function StoreContextProvider({ children }) {
 		document.body.classList.remove("overflow-hidden");
 	};
 
+	const addProductToCart = ({
+		id,
+		category,
+		images,
+		price,
+		title,
+		description,
+	}) => {
+		setCartCount((prevState) => prevState + 1);
+		setCartTotal((prevState) => prevState + price);
+		setCartProducts((prevState) => {
+			const existingProductIndex = prevState.findIndex(
+				(elem) => elem.id === id,
+			);
+			// Validate if the product already exists in the cart
+			if (existingProductIndex !== -1) {
+				const newState = [...prevState];
+
+				const existingProduct = newState[existingProductIndex];
+
+				newState.splice(existingProductIndex, 1, {
+					...existingProduct,
+					quantity: existingProduct.quantity + 1,
+				});
+
+				return newState;
+			}
+			return [
+				...prevState,
+				{ id, category, images, price, title, description, quantity: 1 },
+			];
+		});
+	};
+
+	const openCartMenu = () => {
+		setIsCartMenuOpen(true);
+
+		// Large mobile dimensions
+		if (window.innerWidth < 1024) {
+			document.body.classList.add("overflow-hidden");
+		}
+	};
+
+	const closeCartMenu = () => {
+		setIsCartMenuOpen(false);
+		document.body.classList.remove("overflow-hidden");
+	};
+
+	const removeProductFromCartById = ({ id, price }) => {
+		setCartCount((prevState) => (prevState > 0 ? prevState - 1 : prevState));
+		setCartTotal((prevState) =>
+			prevState > 0 ? prevState - price : prevState,
+		);
+
+		setCartProducts((prevState) => {
+			const existingProductIndex = prevState.findIndex(
+				(elem) => elem.id === id,
+			);
+			// Validate if the product already exists in the cart
+			if (existingProductIndex !== -1) {
+				const newState = [...prevState];
+
+				const existingProduct = newState[existingProductIndex];
+				// Validate if the product has been added more than 1 time
+				if (existingProduct.quantity > 1) {
+					newState.splice(existingProductIndex, 1, {
+						...existingProduct,
+						quantity: existingProduct.quantity - 1,
+					});
+				} else {
+					newState.splice(existingProductIndex, 1);
+				}
+
+				return newState;
+			}
+			return prevState;
+		});
+	};
+
+	const removeAllProductsFromCartById = ({ id, price, quantity }) => {
+		setCartCount((prevState) =>
+			prevState > 0 ? prevState - quantity : prevState,
+		);
+		setCartTotal((prevState) =>
+			prevState > 0 ? prevState - price * quantity : prevState,
+		);
+
+		setCartProducts((prevState) => {
+			const existingProductIndex = prevState.findIndex(
+				(elem) => elem.id === id,
+			);
+			// Validate if the product already exists in the cart
+			if (existingProductIndex !== -1) {
+				const newState = [...prevState];
+				newState.splice(existingProductIndex, 1);
+				return newState;
+			}
+			return prevState;
+		});
+	};
+
 	// Here we are using useMemo() instead of just passing the object to prevent it from changing/recreating on every render
 	const value = useMemo(
 		() => ({
@@ -33,8 +137,25 @@ export default function StoreContextProvider({ children }) {
 			closeProductDetails,
 			productDetailsShown,
 			setProductDetailsShown,
+			cartProducts,
+			setCartProducts,
+			isCartMenuOpen,
+			openCartMenu,
+			closeCartMenu,
+			removeProductFromCartById,
+			cartTotal,
+			setCartTotal,
+			addProductToCart,
+			removeAllProductsFromCartById,
 		}),
-		[cartCount, isProductDetailsOpen, productDetailsShown],
+		[
+			cartCount,
+			isProductDetailsOpen,
+			productDetailsShown,
+			cartProducts,
+			isCartMenuOpen,
+			cartTotal,
+		],
 	);
 
 	return (

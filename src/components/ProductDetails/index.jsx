@@ -8,13 +8,14 @@ export default function ProductDetail() {
 		isProductDetailsOpen,
 		closeProductDetails,
 		productDetailsShown,
-		setCartCount,
+		addProductToCart,
 	} = useContext(StoreContext);
 
-	const { category, images, price, title, description } = productDetailsShown;
+	const { id, category, images, price, title, description } =
+		productDetailsShown;
 
-	const handleOnClick = () => {
-		setCartCount((prevState) => prevState + 1);
+	const handleAddButtonClick = () => {
+		addProductToCart({ id, category, images, price, title, description });
 	};
 
 	return (
@@ -28,6 +29,8 @@ export default function ProductDetail() {
 					<h2 className="text-xl">Details</h2>
 					<Button
 						type="button"
+						className="px-4 py-2"
+						title="Close Product Details"
 						onClick={closeProductDetails}
 						text={<XMarkIcon className="h-6 w-6" />}
 					/>
@@ -47,7 +50,17 @@ export default function ProductDetail() {
 							{category && category.name}
 						</span>
 						<Button
-							onClick={handleOnClick}
+							className="px-4 py-2"
+							onClick={() =>
+								handleAddButtonClick({
+									id,
+									category,
+									images,
+									price,
+									title,
+									description,
+								})
+							}
 							type="button"
 							text={<PlusIcon className="h-6 w-6" />}
 						/>

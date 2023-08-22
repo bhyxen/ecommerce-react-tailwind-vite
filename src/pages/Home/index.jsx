@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
 import ProductDetail from "../../components/ProductDetails";
+import CartMenu from "../../components/CartMenu";
 
 // This should be in an environment variable on a real world app if private
 const API_ENDPOINT = "https://api.escuelajs.co/api/v1/products/";
@@ -58,6 +59,7 @@ export default function Home() {
 						({ id, category, images, price, title, description }) => (
 							<Card
 								key={id}
+								id={id}
 								images={images}
 								price={price}
 								category={category}
@@ -76,11 +78,12 @@ export default function Home() {
 				<Button
 					text="Load More Products"
 					type="button"
-					className="my-5"
+					className="my-5 px-4 py-2"
 					onClick={loadMoreItems}
 				/>
 			)}
 			<ProductDetail />
+			<CartMenu />
 		</>
 	);
 }

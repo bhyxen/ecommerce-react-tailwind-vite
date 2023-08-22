@@ -4,7 +4,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { StoreContext } from "../../context";
 
 function Navbar() {
-	const { cartCount } = useContext(StoreContext);
+	const { cartCount, openCartMenu } = useContext(StoreContext);
 
 	const activeStyle = "underline underline-offset-4";
 
@@ -89,9 +89,20 @@ function Navbar() {
 						Sign In
 					</NavLink>
 				</li>
-				<li className="flex">
-					<ShoppingBagIcon className="w-h h-6" />
-					<span>{cartCount}</span>
+				<li>
+					{/* // Added this semantically interactive div wrapper to preserve accessibility */}
+					<div
+						role="button"
+						tabIndex="0"
+						onKeyDown={(event) => event.key === "Enter" && openCartMenu}
+						className="flex hover:scale-105 transition-all"
+						onClick={openCartMenu}
+						aria-label="Open Cart Menu"
+						title="Open Cart Menu"
+					>
+						<ShoppingBagIcon className="w-h h-6" />
+						<span>{cartCount}</span>
+					</div>
 				</li>
 			</ul>
 		</nav>
