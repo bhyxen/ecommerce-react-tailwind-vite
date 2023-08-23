@@ -10,15 +10,19 @@ function Card({ id, category, images, price, title, description }) {
 		setProductDetailsShown,
 		openCartMenu,
 		addProductToCart,
+		closeCartMenu,
+		closeProductDetails,
 	} = useContext(StoreContext);
 
 	const handleShowDetailsClick = () => {
 		setProductDetailsShown({ id, category, images, price, title, description });
+		closeCartMenu();
 		openProductDetails();
 	};
 
 	const handleAddButtonClick = () => {
 		addProductToCart({ id, category, images, price, title, description });
+		closeProductDetails();
 		openCartMenu();
 	};
 
