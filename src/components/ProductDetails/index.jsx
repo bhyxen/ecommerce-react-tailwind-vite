@@ -22,9 +22,9 @@ export default function ProductDetail() {
 		<aside
 			className={`${
 				isProductDetailsOpen ? "flex" : "hidden"
-			} w-full lg:w-1/4 fixed right-0 h-[calc(100%-5rem)] top-20 p-5 lg:p-0 bg-black/20 lg:bg-transparent justify-center items-center lg:shadow-xl z-50`}
+			} w-full lg:w-1/2 xl:w-1/4 fixed right-0 h-[calc(100%-5rem)] top-20 p-5 lg:p-0 bg-black/20 lg:bg-transparent justify-center items-center lg:shadow-xl z-50`}
 		>
-			<div className="p-5 w-full sm:w-1/2 lg:w-full justify-center bg-slate-50 border lg:border-b-0 lg:border-r-0 border-black rounded-md h-full lg:rounded-e-none lg:rounded-es-none shadow-xl lg:shadow-none overflow-auto overscroll-none">
+			<div className="flex flex-col p-5 w-full sm:w-1/2 lg:w-full justify-start bg-slate-50 border lg:border-b-0 lg:border-r-0 border-black rounded-md h-fit max-h-full lg:h-full lg:rounded-e-none lg:rounded-es-none shadow-xl lg:shadow-none overflow-auto overscroll-none">
 				<div className="flex justify-between items-center mb-5">
 					<h2 className="text-xl">Details</h2>
 					<Button
@@ -35,9 +35,9 @@ export default function ProductDetail() {
 						text={<XMarkIcon className="h-6 w-6" />}
 					/>
 				</div>
-				<figure className="h-5/6 min-h-fit">
+				<figure>
 					<img
-						className="h-1/2 w-full object-cover object-top"
+						className="w-full h-auto object-cover object-top"
 						src={images && images[0]}
 						alt={title && title}
 					/>
