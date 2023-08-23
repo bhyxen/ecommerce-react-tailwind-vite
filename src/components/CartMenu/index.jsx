@@ -38,6 +38,7 @@ export default function CartMenu() {
 							title={title}
 							description={description}
 							quantity={quantity}
+							key={id}
 						/>
 					);
 				})}
