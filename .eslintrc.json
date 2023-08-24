@@ -1,12 +1,19 @@
 {
+	// Need to add 'browser' and 'node' environments separately instead of using 'shared-node-browser' because
+	// of an issue when extending 'airbnb' or 'airbnb-base' that cause this environment to not be recognized.
+	// https://eslint.org/docs/latest/use/configure/language-options#specifying-environments
 	"env": { "browser": true, "es2024": true, "node": true },
 	"extends": ["airbnb", "airbnb/hooks", "prettier"],
 	"parserOptions": {
-		"sourceType": "module"
+		"sourceType": "module",
+		// Need to add 'latest' because of an issue when extending 'airbnb' or 'airbnb-base' that cause
+		// the ecmaVersion to not update to the latest one specified on 'es2024' environment
+		// https://eslint.org/docs/latest/use/configure/language-options#specifying-parser-options
+		"ecmaVersion": "latest"
 	},
 	"rules": {
 		// Disabled this rule because in some React projects like Vite or Next.js,
-		// importing React explicity is NOT required
+		// importing React explicitly is NOT required
 		"react/react-in-jsx-scope": "off"
 	}
 }
