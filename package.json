@@ -6,10 +6,11 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
-		"prettier:write": "npx prettier . --write",
-		"prettier:check": "npx prettier . --check"
+		"lint": "npx eslint \"**/*.{js,jsx,cjs,mjs}\" --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "npx eslint \"**/*.{js,jsx,cjs,mjs}\" --report-unused-disable-directives --max-warnings 0 --fix",
+		"prettier": "npx prettier . --check",
+		"prettier:write": "npx prettier . --write"
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.0.18",
