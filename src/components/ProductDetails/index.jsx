@@ -47,7 +47,7 @@ export default function ProductDetail() {
 						<span className="font-light">{description && description}</span>
 						<span className="flex">
 							<TagIcon className="h-6 w-6 mr-2 text-blue-500" />
-							{category && category.name}
+							{category && category}
 						</span>
 						<Button
 							className="px-4 py-2"

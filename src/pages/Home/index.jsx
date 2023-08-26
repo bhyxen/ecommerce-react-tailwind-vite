@@ -6,20 +6,20 @@ import ProductDetail from "../../components/ProductDetails";
 import CartMenu from "../../components/CartMenu";
 
 // This should be in an environment variable on a real world app if private
-const API_ENDPOINT = "https://api.escuelajs.co/api/v1/products/";
+const API_ENDPOINT = "https://dummyjson.com/products";
 const RESULTS_LIMIT = 12;
 const ERROR_MESSAGE =
 	"No products found or there has been an error, please again try later.";
 const LOADING_MESSAGE = "Loading products...";
 
 export default function Home() {
-	const [products, setProducts] = useState(null);
+	const [storeData, setStoreData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [productsOffset, setProductsOffset] = useState(0);
 	const [moreProductsAvailable, setMoreProductsAvailable] = useState(true);
 
 	const fetchData = () => {
-		fetch(`${API_ENDPOINT}?offset=${productsOffset}&limit=${RESULTS_LIMIT}`)
+		fetch(`${API_ENDPOINT}?skip=${productsOffset}&limit=${RESULTS_LIMIT}`)
 			.then((res) => {
 				if (!res.ok) {
 					throw new Error(ERROR_MESSAGE);
@@ -27,9 +27,14 @@ export default function Home() {
 				return res.json();
 			})
 			.then((data) => {
-				setProducts((prevState) =>
+				setStoreData((prevState) =>
 					// If offset !== 0 means that we are already paginating the results
-					productsOffset !== 0 ? [...prevState, ...data] : data,
+					productsOffset !== 0
+						? {
+								...prevState,
+								products: [...prevState.products, ...data.products],
+						  }
+						: data,
 				);
 				if (data.length === 0) {
 					setMoreProductsAvailable(false);
@@ -54,8 +59,8 @@ export default function Home() {
 	return (
 		<>
 			<div className="w-full max-w-screen-lg grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{products ? (
-					products.map(
+				{storeData ? (
+					storeData?.products?.map(
 						({ id, category, images, price, title, description }) => (
 							<Card
 								key={id}

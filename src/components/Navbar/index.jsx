@@ -12,7 +12,7 @@ function Navbar() {
 		<nav className="flex justify-between items-center fixed w-full py-6 px-8 font-light top-0 bg-slate-50 z-30 h-20">
 			<ul className="flex justify-center items-center gap-3">
 				<li className="font-semibold text-xl">
-					<NavLink to="/">Shopi</NavLink>
+					<NavLink to="/">Shopee</NavLink>
 				</li>
 				<li>
 					<NavLink
@@ -24,42 +24,42 @@ function Navbar() {
 				</li>
 				<li>
 					<NavLink
-						to="/clothes"
+						to="/smartphones"
 						className={({ isActive }) => (isActive ? activeStyle : undefined)}
 					>
-						Clothes
+						SmartPhones
 					</NavLink>
 				</li>
 				<li>
 					<NavLink
-						to="/electronics"
+						to="/laptops"
 						className={({ isActive }) => (isActive ? activeStyle : undefined)}
 					>
-						Electronics
+						Laptops
 					</NavLink>
 				</li>
 				<li>
 					<NavLink
-						to="/furnitures"
+						to="/home-decoration"
 						className={({ isActive }) => (isActive ? activeStyle : undefined)}
 					>
-						Furnitures
+						Home-Decoration
 					</NavLink>
 				</li>
 				<li>
 					<NavLink
-						to="/toys"
+						to="/furniture"
 						className={({ isActive }) => (isActive ? activeStyle : undefined)}
 					>
-						Toys
+						Furniture
 					</NavLink>
 				</li>
 				<li>
 					<NavLink
-						to="/others"
+						to="/lighting"
 						className={({ isActive }) => (isActive ? activeStyle : undefined)}
 					>
-						Others
+						Lighting
 					</NavLink>
 				</li>
 			</ul>

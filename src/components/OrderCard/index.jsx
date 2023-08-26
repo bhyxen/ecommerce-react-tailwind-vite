@@ -1,11 +1,6 @@
 import { useContext, useId } from "react";
 import PropTypes from "prop-types";
-import {
-	TagIcon,
-	TrashIcon,
-	PlusIcon,
-	MinusIcon,
-} from "@heroicons/react/24/solid";
+import { TrashIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
 import Button from "../Button";
 import { StoreContext } from "../../context";
 
