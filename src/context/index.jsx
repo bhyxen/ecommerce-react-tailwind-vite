@@ -8,6 +8,7 @@ export default function StoreContextProvider({ children }) {
 	const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
 	const [productDetailsShown, setProductDetailsShown] = useState({});
 	const [cartProducts, setCartProducts] = useState([]);
+	const [order, setOrder] = useState([]);
 	const [isCartMenuOpen, setIsCartMenuOpen] = useState(false);
 	const [cartTotal, setCartTotal] = useState(0);
 
@@ -26,14 +27,7 @@ export default function StoreContextProvider({ children }) {
 		document.body.classList.remove("overflow-hidden");
 	};
 
-	const addProductToCart = ({
-		id,
-		category,
-		images,
-		price,
-		title,
-		description,
-	}) => {
+	const addProductToCart = ({ id, images, price, title, description }) => {
 		setCartCount((prevState) => prevState + 1);
 		setCartTotal((prevState) => prevState + price);
 		setCartProducts((prevState) => {
@@ -55,12 +49,15 @@ export default function StoreContextProvider({ children }) {
 			}
 			return [
 				...prevState,
-				{ id, category, images, price, title, description, quantity: 1 },
+				{ id, images, price, title, description, quantity: 1 },
 			];
 		});
 	};
 
 	const openCartMenu = () => {
+		// Make sure that Product Details is closed
+		setIsProductDetailsOpen(false);
+
 		setIsCartMenuOpen(true);
 
 		// Large mobile dimensions
@@ -127,6 +124,12 @@ export default function StoreContextProvider({ children }) {
 		});
 	};
 
+	const clearCart = () => {
+		setCartCount(0);
+		setCartTotal(0);
+		setCartProducts([]);
+	};
+
 	// Here we are using useMemo() instead of just passing the object to prevent it from changing/recreating on every render
 	const value = useMemo(
 		() => ({
@@ -147,6 +150,9 @@ export default function StoreContextProvider({ children }) {
 			setCartTotal,
 			addProductToCart,
 			removeAllProductsFromCartById,
+			order,
+			setOrder,
+			clearCart,
 		}),
 		[
 			cartCount,
@@ -155,6 +161,7 @@ export default function StoreContextProvider({ children }) {
 			cartProducts,
 			isCartMenuOpen,
 			cartTotal,
+			order,
 		],
 	);
 

@@ -6,12 +6,12 @@ import { StoreContext } from "../../context";
 
 export default function OrderCard({
 	id,
-	category,
 	images,
 	price,
 	title,
 	description,
 	quantity,
+	orderConfirmed,
 }) {
 	const {
 		removeProductFromCartById,
@@ -41,14 +41,17 @@ export default function OrderCard({
 							>
 								<span className="mr-3">Quantity: </span>
 								<div className="flex items-end">
-									<Button
-										type="button"
-										purpose="secondary"
-										className="border-r-0 h-8 w-8 lg:w-10 lg:h-10 rounded-e-none border-gray-200"
-										title="Remove one item"
-										onClick={() => removeProductFromCartById({ id, price })}
-										text={<MinusIcon className="h-4 w-4 text-black" />}
-									/>
+									{!orderConfirmed && (
+										<Button
+											type="button"
+											purpose="secondary"
+											className="border-r-0 h-8 w-8 lg:w-10 lg:h-10 rounded-e-none border-gray-200"
+											title="Remove one item"
+											onClick={() => removeProductFromCartById({ id, price })}
+											text={<MinusIcon className="h-4 w-4 text-black" />}
+										/>
+									)}
+
 									<input
 										type="text"
 										id={quantityInputId}
@@ -58,23 +61,24 @@ export default function OrderCard({
 										value={quantity}
 										readOnly
 									/>
-									<Button
-										type="button"
-										purpose="secondary"
-										className="border-l-0 h-8 w-8 lg:w-10 lg:h-10 rounded-s-none border-gray-200 text-black"
-										title="Add one item"
-										onClick={() =>
-											addProductToCart({
-												id,
-												category,
-												images,
-												price,
-												title,
-												description,
-											})
-										}
-										text={<PlusIcon className="h-4 w-4 text-black" />}
-									/>
+									{!orderConfirmed && (
+										<Button
+											type="button"
+											purpose="secondary"
+											className="border-l-0 h-8 w-8 lg:w-10 lg:h-10 rounded-s-none border-gray-200 text-black"
+											title="Add one item"
+											onClick={() =>
+												addProductToCart({
+													id,
+													images,
+													price,
+													title,
+													description,
+												})
+											}
+											text={<PlusIcon className="h-4 w-4 text-black" />}
+										/>
+									)}
 								</div>
 							</label>
 						</div>
@@ -84,13 +88,17 @@ export default function OrderCard({
 						</div>
 					</div>
 				</div>
-				<Button
-					className="h-8 w-8 lg:w-10 lg:h-10"
-					onClick={() => removeAllProductsFromCartById({ id, price, quantity })}
-					purpose="error"
-					type="button"
-					text={<TrashIcon className="h-4 w-4" />}
-				/>
+				{!orderConfirmed && (
+					<Button
+						className="h-8 w-8 lg:w-10 lg:h-10"
+						onClick={() =>
+							removeAllProductsFromCartById({ id, price, quantity })
+						}
+						purpose="error"
+						type="button"
+						text={<TrashIcon className="h-4 w-4" />}
+					/>
+				)}
 			</figure>
 			<hr className="border-black mb-5" />
 		</>
@@ -98,12 +106,8 @@ export default function OrderCard({
 }
 
 OrderCard.propTypes = {
-	category: PropTypes.shape({
-		id: PropTypes.number,
-		name: PropTypes.string,
-		image: PropTypes.string,
-	}).isRequired,
 	images: PropTypes.arrayOf(PropTypes.string).isRequired,
+	orderConfirmed: PropTypes.bool.isRequired,
 	price: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,

@@ -58,7 +58,6 @@ export default function Home() {
 						}
 						return { data };
 					})
-					// eslint-disable-next-line no-console
 					.catch((error) => {
 						throw new Error(error);
 					})
