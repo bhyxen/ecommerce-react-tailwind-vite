@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
@@ -7,9 +7,11 @@ import CartMenu from "../../components/CartMenu";
 import "react-toastify/dist/ReactToastify.css";
 import { RESULTS_LIMIT, API_PRODUCTS_ENDPOINT } from "../../constants";
 import useGetProducts from "../../hooks/useGetProducts";
+import Search from "../../components/Search";
 
 export default function Home() {
 	const navigate = useNavigate();
+	const [filteredProducts, setFilteredProducts] = useState(null);
 
 	const {
 		productsData,
@@ -30,24 +32,56 @@ export default function Home() {
 		}));
 	}, [setProductsOffset]);
 
+	const handleOnSearchSubmit = (event) => {
+		event.preventDefault();
+		const formData = new FormData(event.target);
+		const searchTerm = formData.get("search-term");
+
+		if (searchTerm) {
+			setFilteredProducts({
+				...productsData,
+				products: productsData.products.filter((elem) =>
+					elem.title.toLowerCase().includes(searchTerm.toLowerCase()),
+				),
+			});
+		} else {
+			setFilteredProducts(null);
+		}
+	};
+
 	return (
 		<>
+			<Search onSubmit={handleOnSearchSubmit} />
 			<div className="w-full max-w-screen-lg grid gap-6 md:gap-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{productsData?.products?.map(
-					({ id, category, images, price, title, description }) => (
-						<Card
-							key={id}
-							id={id}
-							images={images}
-							price={price}
-							category={category}
-							title={title}
-							description={description}
-						/>
-					),
-				)}
+				{filteredProducts
+					? filteredProducts?.products?.map(
+							({ id, category, images, price, title, description }) => (
+								<Card
+									key={id}
+									id={id}
+									images={images}
+									price={price}
+									category={category}
+									title={title}
+									description={description}
+								/>
+							),
+					  )
+					: productsData?.products?.map(
+							({ id, category, images, price, title, description }) => (
+								<Card
+									key={id}
+									id={id}
+									images={images}
+									price={price}
+									category={category}
+									title={title}
+									description={description}
+								/>
+							),
+					  )}
 			</div>
-			{!!productsData && !!moreProductsAvailable && (
+			{!!productsData && !!moreProductsAvailable && !filteredProducts && (
 				<Button
 					text="Load More Products"
 					type="button"
