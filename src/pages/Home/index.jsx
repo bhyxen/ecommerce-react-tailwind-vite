@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import {
 	// ArrowPathIcon,
 	// CheckIcon,
@@ -25,18 +25,10 @@ export default function Home() {
 	const [moreProductsAvailable, setMoreProductsAvailable] = useState(true);
 
 	const fetchData = () => {
-		let loadingToast;
 		if (moreProductsAvailable) {
 			toast.promise(
 				fetch(`${API_ENDPOINT}?skip=${productsOffset}&limit=${RESULTS_LIMIT}`)
 					.then((res) => {
-						loadingToast = toast.loading(LOADING_MESSAGE, {
-							containerId: "loading-toast",
-							toastId: "loading-toast",
-							theme: "colored",
-							position: "bottom-right",
-						});
-
 						if (!res.ok) {
 							throw new Error(ERROR_MESSAGE);
 						}
@@ -59,19 +51,18 @@ export default function Home() {
 						return { data };
 					})
 					.catch((error) => {
-						throw new Error(error);
-					})
-					.finally(() => {
-						toast.dismiss(loadingToast);
+						throw new Error(`${error}`);
 					}),
 				{
-					// pending: {
-					// 	render() {
-					// 		return LOADING_MESSAGE;
-					// 	},
-					// 	icon: <ArrowPathIcon />,
-					// 	position: "bottom-center",
-					// },
+					pending: {
+						render() {
+							return LOADING_MESSAGE;
+						},
+						// These settings will also apply to 'success' and 'error' toasts
+						toastId: "product-fetching-toast",
+						position: "bottom-right",
+						theme: "colored",
+					},
 					// success: {
 					// 	render() {
 					// 		return PRODUCTS_LOADED_MESSAGE;
@@ -80,17 +71,12 @@ export default function Home() {
 					// },
 					error: {
 						render({ data }) {
-							// When the promise reject, data will contains the error
-							return `${data.message}`;
+							return data.message;
 						},
 						icon: <ExclamationTriangleIcon />,
 						autoClose: false,
-						containerId: "products-status-toast",
-						toastId: "products-status-toast",
-						position: "bottom-right",
 					},
 				},
-				{ theme: "colored" },
 			);
 		}
 	};
@@ -106,7 +92,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="w-full max-w-screen-lg grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+			<div className="w-full max-w-screen-lg grid gap-6 md:gap-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{!!storeData &&
 					storeData?.products?.map(
 						({ id, category, images, price, title, description }) => (
@@ -132,11 +118,6 @@ export default function Home() {
 			)}
 			<ProductDetail />
 			<CartMenu />
-			<ToastContainer
-				enableMultiContainer
-				containerId="products-status-toast"
-			/>
-			<ToastContainer enableMultiContainer containerId="loading-toast" />
 		</>
 	);
 }
