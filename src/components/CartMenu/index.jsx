@@ -1,7 +1,7 @@
 import { useContext, useId } from "react";
 import { Link } from "react-router-dom";
 import { XMarkIcon, BanknotesIcon, CheckIcon } from "@heroicons/react/24/solid";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Button from "../Button";
 import OrderCard from "../OrderCard";
 import { StoreContext } from "../../context";
