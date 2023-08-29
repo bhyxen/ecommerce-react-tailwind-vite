@@ -8,21 +8,23 @@ import OrderCard from "../../components/OrderCard";
 
 export default function MyOrder() {
 	const { order } = useContext(StoreContext);
-	const [displayedOrder, setDisplayedOrder] = useState(null);
+	const [displayedOrder, setDisplayedOrder] = useState({});
 
-	const { orderId } = useParams();
-
-	const { date, totalProducts, totalPrice } = order?.slice(-1)[0] || {};
+	const { orderId: orderIdParam } = useParams();
 
 	useEffect(() => {
-		if (orderId) {
-			setDisplayedOrder(
-				order?.find((currentOrder) => currentOrder.id === orderId),
-			);
-		} else {
-			setDisplayedOrder(order?.slice(-1)[0]);
+		if (order.length) {
+			if (orderIdParam) {
+				setDisplayedOrder(
+					order?.find((currentOrder) => currentOrder.id === orderIdParam),
+				);
+			} else {
+				setDisplayedOrder(order?.slice(-1)[0]);
+			}
 		}
-	}, [order, orderId, displayedOrder]);
+	}, [order, orderIdParam, displayedOrder]);
+
+	const { date, totalProducts, totalPrice, id: orderId } = displayedOrder;
 
 	return (
 		<div className="w-full max-w-2xl">
@@ -32,11 +34,7 @@ export default function MyOrder() {
 				</Link>
 				<h1>
 					My Order ID&nbsp;
-					{!!orderId && (
-						<span className="font-bold text-blue-500">
-							&quot;{orderId}&quot;
-						</span>
-					)}
+					<span className="font-bold text-blue-500">&quot;{orderId}&quot;</span>
 				</h1>
 			</div>
 			{displayedOrder?.products // Products inside the order
@@ -55,13 +53,15 @@ export default function MyOrder() {
 			<div className="text-right">
 				<p>
 					Date: &nbsp;
-					<span className="font-bold">{`${date || "NO DATA"}`}</span>
+					<span className="font-bold">{date || "NO DATA"}</span>
 				</p>
 				<p>
-					Total Products: <span className="font-bold">{totalProducts}</span>
+					Total Products:{" "}
+					<span className="font-bold">{totalProducts || "NO DATA"}</span>
 				</p>
 				<p>
-					Total Price: <span className="font-bold">{totalPrice}</span>
+					Total Price: $
+					<span className="font-bold">{totalPrice || "NO DATA"}</span>
 				</p>
 			</div>
 		</div>
