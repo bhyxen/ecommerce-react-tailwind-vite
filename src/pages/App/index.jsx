@@ -1,4 +1,5 @@
 import { useRoutes, BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import Home from "../Home";
 import MyAccount from "../MyAccount";
@@ -31,6 +32,10 @@ const AppRoutes = () => {
 			element: <MyOrders />,
 		},
 		{
+			path: "/my-orders/:orderId",
+			element: <MyOrder />,
+		},
+		{
 			path: "/my-orders/last",
 			element: <MyOrder />,
 		},
@@ -55,6 +60,8 @@ export default function App() {
 				<Layout>
 					<AppRoutes />
 				</Layout>
+				{/* Global toast to display alerts in different sections of the page */}
+				<ToastContainer />
 			</BrowserRouter>
 		</StoreContextProvider>
 	);

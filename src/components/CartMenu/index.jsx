@@ -1,11 +1,14 @@
-import { useContext } from "react";
+import { useContext, useId } from "react";
 import { Link } from "react-router-dom";
-import { XMarkIcon, BanknotesIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, BanknotesIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { ToastContainer, toast } from "react-toastify";
 import Button from "../Button";
 import OrderCard from "../OrderCard";
 import { StoreContext } from "../../context";
 
 export default function CartMenu() {
+	const ORDER_CONFIRMED = "Order confirmed!";
+
 	const {
 		isCartMenuOpen,
 		cartProducts,
@@ -15,9 +18,21 @@ export default function CartMenu() {
 		clearCart,
 	} = useContext(StoreContext);
 
+	const notifyOrder = () =>
+		toast.success(ORDER_CONFIRMED, {
+			theme: "colored",
+			icon: <CheckIcon />,
+			containerId: "checkout-order-toast",
+			toastId: "checkout-order-toast",
+		});
+
+	const orderId = useId();
+
 	const handleCheckoutButton = () => {
+		const newDate = new Date();
 		const newOrder = {
-			date: new Date(),
+			id: orderId,
+			date: `${newDate.toDateString()}, ${newDate.toLocaleTimeString()}`,
 			products: cartProducts,
 			totalProducts: cartProducts.length,
 			totalPrice: cartTotal,
@@ -26,6 +41,7 @@ export default function CartMenu() {
 		setOrder((prevState) => [...prevState, newOrder]);
 		clearCart();
 		closeCartMenu();
+		notifyOrder();
 	};
 
 	return (
