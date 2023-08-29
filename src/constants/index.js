@@ -8,4 +8,4 @@ export const LOADING_MESSAGE = "Loading products...";
 export const PRODUCTS_LOADED_MESSAGE = "Products loaded correctly!";
 
 // This should be in an environment variable on a real world app if private
-export const API_ENDPOINT = "https://dummyjson.com/products";
+export const API_PRODUCTS_ENDPOINT = "https://dummyjson.com/products";
