@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { RESULTS_LIMIT, ERROR_MESSAGE, LOADING_MESSAGE } from "../constants";
+import { RESULTS_LIMIT, MESSAGES } from "../constants";
 
 export default function useGetProducts({ url, category }) {
 	if (category) {
@@ -25,7 +25,7 @@ export default function useGetProducts({ url, category }) {
 				fetch(`${url}?skip=${productsOffset.offset}&limit=${RESULTS_LIMIT}`)
 					.then((res) => {
 						if (!res.ok) {
-							throw new Error(ERROR_MESSAGE);
+							throw new Error(MESSAGES.PRODUCTS_ERROR_MESSAGE);
 						}
 
 						return res.json();
@@ -59,7 +59,7 @@ export default function useGetProducts({ url, category }) {
 				{
 					pending: {
 						render() {
-							return LOADING_MESSAGE;
+							return MESSAGES.PRODUCTS_LOADED_MESSAGE;
 						},
 						// These settings will also apply to 'success' and 'error' toasts
 						toastId: "product-fetching-toast",
