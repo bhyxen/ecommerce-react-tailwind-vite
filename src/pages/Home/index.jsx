@@ -33,20 +33,19 @@ export default function Home() {
 	return (
 		<>
 			<div className="w-full max-w-screen-lg grid gap-6 md:gap-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{!!productsData &&
-					productsData?.products?.map(
-						({ id, category, images, price, title, description }) => (
-							<Card
-								key={id}
-								id={id}
-								images={images}
-								price={price}
-								category={category}
-								title={title}
-								description={description}
-							/>
-						),
-					)}
+				{productsData?.products?.map(
+					({ id, category, images, price, title, description }) => (
+						<Card
+							key={id}
+							id={id}
+							images={images}
+							price={price}
+							category={category}
+							title={title}
+							description={description}
+						/>
+					),
+				)}
 			</div>
 			{!!productsData && !!moreProductsAvailable && (
 				<Button
