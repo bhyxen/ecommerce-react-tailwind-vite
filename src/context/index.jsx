@@ -2,7 +2,6 @@ import { createContext, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 
 export const StoreContext = createContext();
-
 export default function StoreContextProvider({ children }) {
 	const [cartCount, setCartCount] = useState(0);
 	const [isProductDetailsOpen, setIsProductDetailsOpen] = useState(false);
@@ -11,6 +10,12 @@ export default function StoreContextProvider({ children }) {
 	const [order, setOrder] = useState([]);
 	const [isCartMenuOpen, setIsCartMenuOpen] = useState(false);
 	const [cartTotal, setCartTotal] = useState(0);
+	const [productsData, setProductsData] = useState(null);
+	const [productsOffset, setProductsOffset] = useState({
+		offset: 0,
+		fetched: false,
+	});
+	const [moreProductsAvailable, setMoreProductsAvailable] = useState(true);
 
 	// Here we are manually adding the overflow-* class to the body to prevent it from scrolling when using
 	// product details as a modal on smaller devices
@@ -153,6 +158,12 @@ export default function StoreContextProvider({ children }) {
 			order,
 			setOrder,
 			clearCart,
+			productsData,
+			setProductsData,
+			productsOffset,
+			setProductsOffset,
+			moreProductsAvailable,
+			setMoreProductsAvailable,
 		}),
 		[
 			cartCount,
@@ -162,6 +173,9 @@ export default function StoreContextProvider({ children }) {
 			isCartMenuOpen,
 			cartTotal,
 			order,
+			productsData,
+			productsOffset,
+			moreProductsAvailable,
 		],
 	);
 

@@ -1,33 +1,46 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import {
-	// ArrowPathIcon,
-	// CheckIcon,
-	ExclamationTriangleIcon,
-} from "@heroicons/react/24/solid";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import Card from "../../components/Card/index";
 import Button from "../../components/Button";
 import ProductDetail from "../../components/ProductDetails";
 import CartMenu from "../../components/CartMenu";
 import "react-toastify/dist/ReactToastify.css";
-
-// This should be in an environment variable on a real world app if private
-const API_ENDPOINT = "https://dummyjson.com/products";
-const RESULTS_LIMIT = 12;
-const ERROR_MESSAGE =
-	"No products found or there has been an error, please again try later.";
-const LOADING_MESSAGE = "Loading products...";
-// const PRODUCTS_LOADED_MESSAGE = "Products loaded correctly!";
+import { StoreContext } from "../../context";
+import {
+	RESULTS_LIMIT,
+	API_ENDPOINT,
+	ERROR_MESSAGE,
+	LOADING_MESSAGE,
+} from "../../constants";
 
 export default function Home() {
-	const [storeData, setStoreData] = useState(null);
-	const [productsOffset, setProductsOffset] = useState(0);
-	const [moreProductsAvailable, setMoreProductsAvailable] = useState(true);
+	const {
+		productsData,
+		setProductsData,
+		moreProductsAvailable,
+		setMoreProductsAvailable,
+		productsOffset,
+		setProductsOffset,
+	} = useContext(StoreContext);
 
-	const fetchData = () => {
-		if (moreProductsAvailable) {
+	// Using useCallback() to always send the same function as callback to the Button component,
+	// in this way we prevent creating a new loadMoreItems() function on each render
+	const loadMoreItems = useCallback(() => {
+		// By updating the state, we are triggering the useEffect callback
+		setProductsOffset((prevState) => ({
+			offset: prevState.offset + RESULTS_LIMIT,
+			fetched: false,
+		}));
+	}, [setProductsOffset]);
+
+	useEffect(() => {
+		// With this validation we prevent calling this effect in an infinite loop
+		if (moreProductsAvailable && !productsOffset.fetched) {
 			toast.promise(
-				fetch(`${API_ENDPOINT}?skip=${productsOffset}&limit=${RESULTS_LIMIT}`)
+				fetch(
+					`${API_ENDPOINT}?skip=${productsOffset.offset}&limit=${RESULTS_LIMIT}`,
+				)
 					.then((res) => {
 						if (!res.ok) {
 							throw new Error(ERROR_MESSAGE);
@@ -36,15 +49,21 @@ export default function Home() {
 						return res.json();
 					})
 					.then((data) => {
-						setStoreData((prevState) =>
+						setProductsData((prevState) =>
 							// If offset !== 0 means that we are already paginating the results
-							productsOffset !== 0
+							productsOffset.offset !== 0
 								? {
 										...prevState,
-										products: [...prevState.products, ...data.products],
+										products: [
+											...new Set([...prevState.products, ...data.products]),
+										],
 								  }
 								: data,
 						);
+						setProductsOffset((prevState) => ({
+							...prevState,
+							fetched: true,
+						}));
 						if (data.products.length === 0) {
 							setMoreProductsAvailable(false);
 						}
@@ -79,22 +98,19 @@ export default function Home() {
 				},
 			);
 		}
-	};
-
-	// Using useCallback() to always send the same function as callback to the Button component,
-	// in this way we prevent creating a new loadMoreItems() function on each render
-	const loadMoreItems = useCallback(() => {
-		// By updating the state, we are triggering the useEffect callback
-		setProductsOffset((prevState) => prevState + RESULTS_LIMIT);
-	}, []);
-
-	useEffect(fetchData, [productsOffset, moreProductsAvailable]);
+	}, [
+		productsOffset,
+		moreProductsAvailable,
+		setMoreProductsAvailable,
+		setProductsData,
+		setProductsOffset,
+	]);
 
 	return (
 		<>
 			<div className="w-full max-w-screen-lg grid gap-6 md:gap-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{!!storeData &&
-					storeData?.products?.map(
+				{!!productsData &&
+					productsData?.products?.map(
 						({ id, category, images, price, title, description }) => (
 							<Card
 								key={id}
