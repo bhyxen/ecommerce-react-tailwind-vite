@@ -11,4 +11,4 @@ export const MESSAGES = {
 export const API_PRODUCTS_ENDPOINT = "https://dummyjson.com/products";
 
 // Default debounce time in milliseconds
-export const DEBOUNCE_TIME = 800;
+export const DEBOUNCE_TIME = 300;
