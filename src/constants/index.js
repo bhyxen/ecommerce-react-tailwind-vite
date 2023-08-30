@@ -9,3 +9,6 @@ export const MESSAGES = {
 
 // This should be in an environment variable on a real world app if private
 export const API_PRODUCTS_ENDPOINT = "https://dummyjson.com/products";
+
+// Default debounce time in milliseconds
+export const DEBOUNCE_TIME = 800;

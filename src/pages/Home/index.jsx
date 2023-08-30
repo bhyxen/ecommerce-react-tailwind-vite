@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { RESULTS_LIMIT, API_PRODUCTS_ENDPOINT } from "../../constants";
 import useGetProducts from "../../hooks/useGetProducts";
 import Search from "../../components/Search";
+import { searchProducts } from "../../util";
 
 export default function Home() {
 	const navigate = useNavigate();
@@ -36,22 +37,26 @@ export default function Home() {
 		event.preventDefault();
 		const formData = new FormData(event.target);
 		const searchTerm = formData.get("search-term");
+		const filteredProductsResults = searchProducts({
+			searchTerm,
+			productsData,
+		});
+		setFilteredProducts(filteredProductsResults);
+	};
 
-		if (searchTerm) {
-			setFilteredProducts({
-				...productsData,
-				products: productsData.products.filter((elem) =>
-					elem.title.toLowerCase().includes(searchTerm.toLowerCase()),
-				),
-			});
-		} else {
-			setFilteredProducts(null);
-		}
+	const handleOnKeyUpSearch = (event) => {
+		event.preventDefault();
+		const searchTerm = event.target.value;
+		const filteredProductsResults = searchProducts({
+			searchTerm,
+			productsData,
+		});
+		setFilteredProducts(filteredProductsResults);
 	};
 
 	return (
 		<>
-			<Search onSubmit={handleOnSearchSubmit} />
+			<Search onSubmit={handleOnSearchSubmit} onKeyUp={handleOnKeyUpSearch} />
 			<div className="w-full max-w-screen-lg grid gap-6 md:gap-10 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{filteredProducts
 					? filteredProducts?.products?.map(
