@@ -8,7 +8,7 @@ export default function MyOrders() {
 	const { order } = useContext(StoreContext);
 
 	return (
-		<div className="w-full max-w-2xl flex justify-between flex-col">
+		<div className="w-full flex justify-between flex-col">
 			<div className="flex justify-between">
 				<Link to="..">
 					<ChevronLeftIcon className="h-6 w-6" />

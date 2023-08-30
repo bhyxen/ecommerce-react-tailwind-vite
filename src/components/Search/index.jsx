@@ -12,11 +12,11 @@ export default function Search({ onSubmit, onKeyUp }) {
 	return (
 		<form
 			onSubmit={onSubmit}
-			className="w-full flex gap-x-5 mb-5 items-center justify-center"
+			className="w-full md:w-1/2 mx-auto md:mr-0 flex gap-x-5 mb-5 items-center"
 		>
 			<input
 				onKeyUp={onKeyUpDebounced}
-				className="py-3 px-5"
+				className="flex-1 py-3 px-5"
 				placeholder="laptops, smartphones..."
 				type="text"
 				name="search-term"

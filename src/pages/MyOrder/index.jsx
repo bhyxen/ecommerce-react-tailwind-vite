@@ -27,7 +27,7 @@ export default function MyOrder() {
 	const { date, totalProducts, totalPrice, id: orderId } = displayedOrder;
 
 	return (
-		<div className="w-full max-w-2xl">
+		<div className="w-full">
 			<div className="flex justify-between mb-5">
 				<Link to="/my-orders">
 					<ChevronLeftIcon className="h-6 w-6" />
