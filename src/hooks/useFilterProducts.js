@@ -28,7 +28,7 @@ export default function useFilterProducts({ productsData }) {
 		const searchTerm = formData.get("search-term");
 		const filteredProductsResults = searchProducts({
 			searchTerm,
-			productsData,
+			productsCurrentData: productsData,
 		});
 		setFilteredProducts(filteredProductsResults);
 	};
@@ -38,7 +38,7 @@ export default function useFilterProducts({ productsData }) {
 		const searchTerm = event.target.value;
 		const filteredProductsResults = searchProducts({
 			searchTerm,
-			productsData,
+			productsCurrentData: productsData,
 		});
 		setFilteredProducts(filteredProductsResults);
 	};
