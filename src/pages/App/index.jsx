@@ -12,12 +12,37 @@ import Layout from "../../components/Layout";
 import StoreContextProvider from "../../context";
 
 import "./App.css";
+import Laptops from "../Laptops";
+import HomeDecoration from "../HomeDecoration";
+import SmartPhones from "../SmartPhones";
+import Furniture from "../Furniture";
+import Lighting from "../Lighting";
 
 const AppRoutes = () => {
 	const routes = useRoutes([
 		{
 			path: "/",
 			element: <Home />,
+		},
+		{
+			path: "/smartphones",
+			element: <SmartPhones />,
+		},
+		{
+			path: "/laptops",
+			element: <Laptops />,
+		},
+		{
+			path: "/home-decoration",
+			element: <HomeDecoration />,
+		},
+		{
+			path: "/furniture",
+			element: <Furniture />,
+		},
+		{
+			path: "/lighting",
+			element: <Lighting />,
 		},
 		{
 			path: "/my-account",
@@ -54,15 +79,17 @@ const AppRoutes = () => {
 
 export default function App() {
 	return (
-		<StoreContextProvider>
-			<BrowserRouter>
-				<Navbar />
-				<Layout>
-					<AppRoutes />
-				</Layout>
-				{/* Global toast to display alerts in different sections of the page */}
-				<ToastContainer />
-			</BrowserRouter>
-		</StoreContextProvider>
+		<div className="text-slate-800">
+			<StoreContextProvider>
+				<BrowserRouter>
+					<Navbar />
+					<Layout>
+						<AppRoutes />
+					</Layout>
+					{/* Global toast to display alerts in different sections of the page */}
+					<ToastContainer />
+				</BrowserRouter>
+			</StoreContextProvider>
+		</div>
 	);
 }

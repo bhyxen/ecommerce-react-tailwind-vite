@@ -2,13 +2,17 @@ import { useCallback } from "react";
 import ProductDetail from "../../components/ProductDetails";
 import CartMenu from "../../components/CartMenu";
 import "react-toastify/dist/ReactToastify.css";
-import { API_PRODUCTS_ENDPOINT, RESULTS_LIMIT } from "../../constants";
+import {
+	API_PRODUCTS_ENDPOINT,
+	PRODUCT_CATEGORIES,
+	RESULTS_LIMIT,
+} from "../../constants";
 import ProductsGrid from "../../components/ProductsGrid";
 import useGetProducts from "../../hooks/useGetProducts";
 import ProductsHeader from "../../components/ProductsHeader";
 import useFilterProducts from "../../hooks/useFilterProducts";
 
-export default function Home() {
+export default function Laptops() {
 	const {
 		productsData,
 		moreProductsAvailable,
@@ -16,6 +20,7 @@ export default function Home() {
 		errorOcurred,
 	} = useGetProducts({
 		url: API_PRODUCTS_ENDPOINT,
+		category: PRODUCT_CATEGORIES.LAPTOPS,
 	});
 
 	// Using useCallback() to always send the same function as callback to the Button component,
@@ -34,7 +39,7 @@ export default function Home() {
 	return (
 		<>
 			<ProductsHeader
-				category="All"
+				category="Laptops"
 				searchSubmit={handleOnSearchSubmit}
 				searchKeyUp={handleOnKeyUpSearch}
 			/>

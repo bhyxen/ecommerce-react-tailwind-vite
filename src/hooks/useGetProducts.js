@@ -3,8 +3,10 @@ import { toast } from "react-toastify";
 import { RESULTS_LIMIT, MESSAGES } from "../constants";
 
 export default function useGetProducts({ url, category }) {
+	let urlConstructed = url;
+
 	if (category) {
-		url.concat(`/category/${category}`);
+		urlConstructed = urlConstructed.concat(`/category/${category}`);
 	}
 
 	const [productsOffset, setProductsOffset] = useState({
@@ -22,7 +24,9 @@ export default function useGetProducts({ url, category }) {
 		// With this validation we prevent calling this effect in an infinite loop
 		if (moreProductsAvailable && !productsOffset.fetched) {
 			toast.promise(
-				fetch(`${url}?skip=${productsOffset.offset}&limit=${RESULTS_LIMIT}`)
+				fetch(
+					`${urlConstructed}?skip=${productsOffset.offset}&limit=${RESULTS_LIMIT}`,
+				)
 					.then((res) => {
 						if (!res.ok) {
 							throw new Error(MESSAGES.PRODUCTS_ERROR_MESSAGE);
@@ -59,7 +63,7 @@ export default function useGetProducts({ url, category }) {
 				{
 					pending: {
 						render() {
-							return MESSAGES.PRODUCTS_LOADED_MESSAGE;
+							return MESSAGES.PRODUCTS_LOADING_MESSAGE;
 						},
 						// These settings will also apply to 'success' and 'error' toasts
 						toastId: "product-fetching-toast",
@@ -86,7 +90,7 @@ export default function useGetProducts({ url, category }) {
 		setMoreProductsAvailable,
 		setProductsData,
 		setProductsOffset,
-		url,
+		urlConstructed,
 	]);
 
 	return {
